@@ -27,6 +27,7 @@ public final class App extends Application {
         final var root = fxmlLoader.<Parent>load();
         final var scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Log Parser");
         stage.show();
     }
 

@@ -1,7 +1,7 @@
 package com.github.arsegg;
 
 import com.github.arsegg.controls.FileViewTab;
-import com.github.arsegg.tasks.FindPatternTask;
+import com.github.arsegg.tasks.FirstMatchTask;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public final class Controller {
-    private final List<Reference<FindPatternTask>> findPatternTaskList = new ArrayList<>();
+    private final List<Reference<FirstMatchTask>> findPatternTaskList = new ArrayList<>();
     @FXML
     private TreeView<Path> treeView;
     @FXML
@@ -75,7 +75,7 @@ public final class Controller {
             treeView.setRoot(root);
             walk.filter(path -> Files.isRegularFile(path) && path.toString().endsWith(format)) // filter regular files of certain format
                     .forEach(file -> {
-                        final var task = new FindPatternTask(file, Pattern.compile(pattern));
+                        final var task = new FirstMatchTask(file, Pattern.compile(pattern));
                         task.setOnSucceeded(event -> {
                             System.out.println("Done!");
                             if (task.getValue()) {
@@ -88,6 +88,35 @@ public final class Controller {
                     });
         } catch (final IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void find() {
+        final var pattern = patternTextField.getText();
+        final var tab = (FileViewTab) tabPane.getSelectionModel().getSelectedItem();
+
+        if (tab != null && pattern != null && !pattern.isEmpty()) {
+            tab.setPattern(Pattern.compile(pattern));
+            tab.find();
+        }
+    }
+
+    @FXML
+    public void findNext() {
+        final var tab = (FileViewTab) tabPane.getSelectionModel().getSelectedItem();
+
+        if (tab != null) {
+            tab.findNext();
+        }
+    }
+
+    @FXML
+    public void findPrevious() {
+        final var tab = (FileViewTab) tabPane.getSelectionModel().getSelectedItem();
+
+        if (tab != null) {
+            tab.findPrevious();
         }
     }
 
