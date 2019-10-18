@@ -7,32 +7,32 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-/**
- * JavaFX App
- */
-public class App extends Application {
+public final class App extends Application {
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    private static Scene scene;
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public static ExecutorService getExecutorService() {
+        return executorService;
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         launch();
     }
 
+    @Override
+    public void start(final Stage stage) throws IOException {
+        final var fxmlLoader = new FXMLLoader(App.class.getResource("app.fxml"));
+        final var root = fxmlLoader.<Parent>load();
+        final var scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Log Parser");
+        stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        executorService.shutdownNow();
+    }
 }

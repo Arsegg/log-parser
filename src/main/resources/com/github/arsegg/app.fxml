@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
+<VBox prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.github.arsegg.Controller">
+    <MenuBar>
+        <Menu text="_File">
+            <MenuItem accelerator="Shortcut+O" onAction="#openFileDialog" text="_Open"/>
+            <MenuItem accelerator="Shortcut+D" onAction="#openDirectoryDialog" text="Open _Directory"/>
+        </Menu>
+        <Menu text="_Edit">
+            <MenuItem accelerator="Shortcut+F" onAction="#find" text="F_ind"/>
+            <MenuItem accelerator="F3" onAction="#findNext" text="Find _Next"/>
+            <MenuItem accelerator="Shift+F3" onAction="#findPrevious" text="Find _Previous"/>
+        </Menu>
+    </MenuBar>
+    <SplitPane VBox.vgrow="ALWAYS">
+        <TreeView fx:id="treeView"/>
+        <TabPane fx:id="tabPane"/>
+    </SplitPane>
+    <FlowPane>
+        <Label text="Pattern:"/>
+        <TextField fx:id="patternTextField"/>
+        <Label text="Format:"/>
+        <TextField text=".log" fx:id="formatTextField"/>
+    </FlowPane>
+</VBox>
